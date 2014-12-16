@@ -251,25 +251,24 @@ namespace ioSoftSmiths.ioPathing
             return (double)Math.Ceiling(Math.Sqrt(a * a + b * b));
         }
 
-
-        private static int debugFrameCount = 0;
-
         //public static IEnumerator AStar(Graph2d _graph, IVector2 _start, IVector2 _end, double _turnCostAdder, double _defVaul, Func<IVector2, IVector2, double, double> _heuristic)
         public static void AStar(Graph2d _graph, IVector2 _start, IVector2 _end, double _turnCostAdder, double _defVaul, Func<IVector2, IVector2, double, double> _heuristic)
         {
 
-            bool debugMe = true;
-            int frameUpdateRate = 30;
+            
+            
 
             var openList = new ioMinPriQ<AStarOpenNode>();
             openList.Enqueue(new AStarOpenNode(_start, null, 0, _heuristic(_start, _end, _defVaul)));
             var closedList = new Dictionary<IVector2, AStarClosedNode>();
 
             /* //UNITY
+            bool debugMe = true;
             var texture = (Texture2D)TileMap2D.meshRenderer.material.mainTexture;
+            int frameUpdateRate = 30;
             if (debugMe)
             {
-
+            
                 texture.SetPixel(_start.x, _start.y, new Color(0.6f, 1f, 0.6f, 1));
                 texture.SetPixel(_end.x, _end.y, new Color(0.6f, 1f, 0.6f, 1));
                 texture.Apply();

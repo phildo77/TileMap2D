@@ -162,9 +162,9 @@ namespace ioSoftSmiths.TileMap
             var logOutput = new Action<string>(System.Console.WriteLine);
             Msg.CreateLog(LOGKEY_MESSAGES, LogVerbosity.HIGH, LogStyle.MESSAGE_ONLY, logOutput);
 
-            int? curSeed = Settings.RndSeed;
+
             //Set random seed
-            if (curSeed == null)
+            if (Settings.RndSeed == null)
             {
                 byte[] rngCont = { 0, 0, 0, 0 };
                 var rng = RandomNumberGenerator.Create();
@@ -172,15 +172,15 @@ namespace ioSoftSmiths.TileMap
                 if (BitConverter.IsLittleEndian)
                     Array.Reverse(rngCont);
 
-                curSeed = BitConverter.ToInt32(rngCont, 0);
+                Settings.RndSeed = BitConverter.ToInt32(rngCont, 0);
             }
-            m_Random = new Random(curSeed.Value);
+            m_Random = new Random(Settings.RndSeed.Value);
 
             long timeStamp = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
             Msg.LogDebug(TAG_DEBUG, DebugSettingsToString(), MsgPriLvl.HIGH);
 
 
-            String logMsg = "Creating Dungeon... (Seed [ " + curSeed + " ])\n  Generating Rooms...";
+            String logMsg = "Creating Dungeon... (Seed [ " + Settings.RndSeed + " ])\n  Generating Rooms...";
             Msg.Log(LOGKEY_MESSAGES, LOGKEY_MESSAGES, logMsg, MsgPriLvl.HIGH);
 
             //1.  Generate and place rooms ===========================================================================
@@ -240,6 +240,8 @@ namespace ioSoftSmiths.TileMap
                 mapBounds = new Bounds(roomBndys);
                 var shape = Settings.AllowedRoomShapes[m_Random.Next(Settings.AllowedRoomShapes.Count)];
                 rooms.Add(new Room(roomBndys[bndyIdx].ShrinkBy(curPlacementBuffer), shape));
+
+                Msg.Log(LOGKEY_MESSAGES, LOGKEY_MESSAGES, "Placing Rooms: " + (int)((float) bndyIdx/(roomCount - 1) * 100), MsgPriLvl.HIGH);
             }
 
             //Add outer buffer
@@ -287,9 +289,9 @@ namespace ioSoftSmiths.TileMap
 
             if (m_Tilemap.m_Tunnels == null)
             {
-                var newSeed = (int)Math.Pow(curSeed.Value, 2);
+                var newSeed = (int)Math.Pow(Settings.RndSeed.Value, 2);
                 Msg.LogDebug(TAG_DEBUG,
-                    "Bad Triangulation restarting Dungeon Thread with Seed " + curSeed + " trying Seed " + newSeed,
+                    "Bad Triangulation restarting Dungeon Thread with Seed " + Settings.RndSeed + " trying Seed " + newSeed,
                     MsgPriLvl.HIGH);
                 Settings.RndSeed = newSeed;
                 //yield return Dungeon(); //UNITY
