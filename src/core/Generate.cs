@@ -79,9 +79,7 @@ namespace ioSoftSmiths.TileMap
             //TileMap2D.meshRenderer.material.mainTexture = null;
 
             //Set Logging action
-            //var logOutput = new Action<string>(Debug.Log);
-            var logOutput = new Action<string>(Console.WriteLine);
-            Msg.CreateLog(LOGKEY_MESSAGES, LogVerbosity.HIGH, LogStyle.MESSAGE_ONLY, logOutput);
+            Msg.CreateLog(LOGKEY_MESSAGES, LogVerbosity.HIGH, LogStyle.MESSAGE_ONLY, Settings.ActionForUserMessages);
 
 
             //Set random seed
@@ -902,31 +900,45 @@ namespace ioSoftSmiths.TileMap
 
             //Dungeon Seed (null = random by system time)
             public static int? RndSeed;
+
+            //Action for messages generated for the user
+            public static Action<string> ActionForUserMessages = (Console.WriteLine);
+
             //Overall aspect ratio target for the entire map (0 = random)
             public static double AspectRatio = 0;
+
             //Room count and size
             public static int RoomCountMin = 5;
             public static int RoomCountMax = 10;
             public static int RoomSizeMin = 6;
             public static int RoomSizeMax = 10;
+
             //Buffer between rooms
             public static int RoomBufferMin = 5;
             public static int RoomBufferMax = 8;
+
             //Outer map buffer (empty space)
             public static int MapOuterBuffer = 3;
+
             //Sets whether or not routing is done between closest available points on the map or only room to room.
             public static bool ClosestConnect = true;
+
             //Buffer push from room edge to tunnel routing
             public static int TunnelBuffer = 1;
+
             //Tunnel routing attraction (higher should pull tunnels into eachother)
             public static int TunnelPathMag = 3;
+
             //Tunnel routing strength (higher should mean less of a web / exisiting tunnels used more)
             public static MagStrength TunnelRoutingStrength = MagStrength.Medium;
+
             //Percentage of extra room connections beyond MST
             public static double ExtraTunnelMinPct = 0.2;
             public static double ExtraTunnelMaxPct = 0.4;
+
             //Sets cost multiplier for making turns when routing tunnels
             public static TTCost TunnelTurningCost = TTCost.Normal;
+
             //Allowable room shapes
             public static List<Room.ShapeType> AllowedRoomShapes = new List<Room.ShapeType>
             {
@@ -939,6 +951,7 @@ namespace ioSoftSmiths.TileMap
 
 
             public static RSType RoomSpread = RSType.Tight;
+
             public enum RSType : byte
             {
                 Tight,

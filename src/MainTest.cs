@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using ioSoftSmiths.ioLog;
 using ioSoftSmiths.TileMap;
 
@@ -12,11 +13,12 @@ class MainTest
         Console.SetWindowSize(155, 50);
 
         Msg.DebugVerbosity = LogVerbosity.LOW;
-        Msg.DebugAction = (_group, _msg) => Console.WriteLine(_group + " : " + _msg);
+        Msg.DebugAction = (_group, _msg) => Debug.WriteLine(_group + " : " + _msg);
+        Generate.Settings.ActionForUserMessages = Console.WriteLine;
 
         Generate.SetDefaultMaterials(1, 2);
 
-        Generate.Settings.RndSeed = -1708127739;
+        //Generate.Settings.RndSeed = -1708127739;
 
         Generate.Settings.AspectRatio = 1f;
 
