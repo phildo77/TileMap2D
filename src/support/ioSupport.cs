@@ -44,7 +44,19 @@ namespace ioSoftSmiths.ioSupport
 
         public bool Intersects(ISegment _segment)
         {
-            return (GetIntersection(_segment) != null);
+            int denom = ((_segment.End.y - _segment.Start.y) * (End.x - Start.x))
+                - ((_segment.End.x - _segment.Start.x) * (End.y - Start.y));
+
+            if (denom == 0) {
+                return false;
+            }
+
+            int ua = ((_segment.End.x - _segment.Start.x) * (Start.y - _segment.Start.y))
+                - ((_segment.End.y - _segment.Start.y) * (Start.x - _segment.Start.x)) / denom;
+            int ub = ((End.x - Start.x) * (Start.y - _segment.Start.y))
+                - ((End.y - Start.y) * (Start.x - _segment.Start.x)) / denom;
+
+            return ((ua >= 0) && (ua <= 1) && (ub >= 0) && (ub <= 1));
         }
 
         public IVector2? GetIntersection(ISegment _segment)
@@ -460,16 +472,8 @@ namespace ioSoftSmiths.ioSupport
 
         public bool Overlaps(Bounds _other)
         {
-            var thisBnds = this;
-            var cornerCheck = (thisBnds.Corners.Any(_other.Encapsulates) || _other.Corners.Any(_corner => thisBnds.Encapsulates(_corner)));
-            return cornerCheck || Intersects(_other);
-        }
-
-        public bool Intersects(Bounds _other)
-        {
-            var bndyPath = Support2D.CreatePath(Corners, true);
-            var otherBndyPath = Support2D.CreatePath(_other.Corners, true);
-            return Support2D.FindIntersections(bndyPath, otherBndyPath, false).Count != 0;
+            return (xMin < _other.xMax && xMax > _other.xMin &&
+                    yMin < _other.yMax && yMax > _other.yMin);
         }
 
         public Bounds ShrinkBy(int _shrink)

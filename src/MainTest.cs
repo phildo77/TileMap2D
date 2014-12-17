@@ -18,7 +18,7 @@ class MainTest
 
         //Generate.Settings.RndSeed = -1708127739;
 
-        Generate.Settings.AspectRatio = 0f;
+        Generate.Settings.AspectRatio = 1f;
 
         Generate.Settings.RoomBufferMin = 1;
         Generate.Settings.RoomBufferMax = 3;
@@ -28,8 +28,8 @@ class MainTest
         Generate.Settings.ClosestConnect = false;
         Generate.Settings.TunnelTurningCost = Generate.Settings.TTCost.Normal;
 
-        Generate.Settings.RoomCountMin = 20;
-        Generate.Settings.RoomCountMax = 26;
+        Generate.Settings.RoomCountMin = 50;
+        Generate.Settings.RoomCountMax = 60;
         Generate.Settings.RoomSizeMin = 6;
         Generate.Settings.RoomSizeMax = 20;
 

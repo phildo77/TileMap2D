@@ -20,10 +20,10 @@ namespace ioSoftSmiths.TileMap
         {
             get
             {
-                var segs = new List<ISegment>();
-                foreach (IPath path in m_Paths)
-                    segs.AddRange(path.Segments);
-                return segs;
+                var allPathSegs = new List<ISegment>();
+                foreach (var path in m_Paths)
+                    allPathSegs.AddRange(path.Segments);
+                return allPathSegs;
             }
         }
 
@@ -59,14 +59,6 @@ namespace ioSoftSmiths.TileMap
             Add(_path);
 
         }
-
-        /*public bool Contains(Room _room)
-        {
-            foreach (IPath path in m_Paths) 
-                if (path.ConnectsTo(_room)) return true;
-            return false;
-
-        }*/
 
         public bool Intersects(TunnelNetwork _tunnel)
         {
@@ -122,73 +114,6 @@ namespace ioSoftSmiths.TileMap
 
                 }
             }
-
-
-
-
-
-
-
-            /*
-            //From network or to network?
-
-            //Find intersection
-            IPath existPath = null;
-            var intersects = new List<IVector2>();
-
-            Msg.LogDebug(TAG_DEBUG, "Adding path to Tunnelnetwork", MsgPriLvl.MED);
-            foreach(IPath path in m_Paths) {
-                intersects = Support2D.FindIntersections(path.Points, _path.Points, false);
-                
-                if (intersects.Count > 0)
-                {
-                    foreach(var intersect in intersects)
-                        Msg.LogDebug(TAG_DEBUG, "Intersections at " + intersect, MsgPriLvl.MED);
-                    existPath = path;
-                    break;
-                }
-            }
-
-            if (existPath == null)
-            {
-                Msg.LogDebug(TAG_DEBUG, "TunnelNetwork: Add: path did not intersect tunnel network.  Doing nothing", MsgPriLvl.HIGH);
-                return;
-            }
-
-            //Check if either room already exists in network
-            bool from = false, to = false;
-            if(_path.Rooms[1] != null)
-                if (ConnectsTo(_path.Rooms[1]))
-                    from = true;
-            if(_path.Rooms[0] != null)
-                if (ConnectsTo(_path.Rooms[0])) 
-                    to = true;
-
-            if(from && to)
-                Msg.LogDebug(TAG_DEBUG,"Both rooms already connected doing nothing.", MsgPriLvl.MED);
-
-            if (!from)
-            {
-                IPath path = _path.Cut(null, intersects.First());
-                m_Paths.Add(path);
-                if (_path.Rooms[1] == null)
-                    Msg.LogDebug(TAG_DEBUG, "From Room null.  To point intersection is " + intersects.Last().ToString() + " cut path is: " + path.ToString(), MsgPriLvl.LOW);
-                else
-                    Msg.LogDebug(TAG_DEBUG, "From Room " + _path.Rooms[1].Anchor + " not connected.  Cutting new path:\n" + path.ToString(), MsgPriLvl.LOW);
-
-            }
-
-            if (!to)
-            {
-                IPath path = _path.Cut(intersects.Last(), null);
-                m_Paths.Add(path);
-                if (_path.Rooms[0] == null)
-                    Msg.LogDebug(TAG_DEBUG, "To Room null.  To point intersection is " + intersects.Last().ToString() + " cut path is: " + path.ToString(),MsgPriLvl.LOW);
-                else
-                    Msg.LogDebug(TAG_DEBUG, "To Room " + _path.Rooms[0].Anchor + " not connected.  Cutting new path:\n" + path.ToString(),MsgPriLvl.LOW);
-            }
-                */
-
         }
 
 
@@ -229,18 +154,7 @@ namespace ioSoftSmiths.TileMap
                     return reversePath;
                 }
             }
-
-            public List<ISegment> Segments
-            {
-                get
-                {
-                    var segs = new List<ISegment>();
-                    for (int i = 0; i < m_Path.Count - 1; ++i)
-                        segs.Add(new ISegment(m_Path[i], m_Path[i + 1]));
-                    return segs;
-                }
-            }
-
+            
             public Room[] Rooms { get { return new Room[2] { m_FromRoom, m_ToRoom }; } }
 
             public List<int> CornerIndicies
@@ -255,6 +169,37 @@ namespace ioSoftSmiths.TileMap
                         if (prevCoord.x != nextCoord.x && prevCoord.y != nextCoord.y)
                             cornerIndicies.Add(idx);
                     }
+                    return cornerIndicies;
+
+                }
+            }
+
+            public List<ISegment> Segments
+            {
+                get
+                {
+                    var pathSegs = new List<ISegment>();
+                    foreach (var turnIdx in CornerIndiciesWithEnds)
+                        if (turnIdx != m_Path.Count - 1)
+                            pathSegs.Add(new ISegment(m_Path[turnIdx], m_Path[turnIdx + 1]));
+                    return pathSegs;
+                }
+            }
+
+            public List<int> CornerIndiciesWithEnds
+            {
+                get
+                {
+                    var cornerIndicies = new List<int>();
+                    cornerIndicies.Add(0);
+                    for (int idx = 1; idx < Points.Count - 1; ++idx)
+                    {
+                        var prevCoord = Points[idx - 1];
+                        var nextCoord = Points[idx + 1];
+                        if (prevCoord.x != nextCoord.x && prevCoord.y != nextCoord.y)
+                            cornerIndicies.Add(idx);
+                    }
+                    cornerIndicies.Add(m_Path.Count - 1);
                     return cornerIndicies;
 
                 }
