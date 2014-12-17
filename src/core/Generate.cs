@@ -32,6 +32,11 @@ namespace ioSoftSmiths.TileMap
             get { return m_Generating; }
         }
 
+        public static bool FlipCoin()
+        {
+            return m_Random.Next(2) == 1;
+        }
+
         public static TileMap2D GetGeneratedMap()
         {
             GenerateDone = false;
@@ -106,12 +111,11 @@ namespace ioSoftSmiths.TileMap
             if (tarAspect > MAX_ASPECT || tarAspect < 1f/MAX_ASPECT)
             {
                 //invalid target aspect
-                var fiftyFifty = m_Random.Next(2);
-                if (fiftyFifty == 0) //Aspect < 1 range
+                if (FlipCoin()) 
                 {
                     tarAspect = m_Random.NextDouble()*7 + 1;
                 }
-                else //Aspect > 1 range
+                else 
                 {
                     tarAspect = (m_Random.NextDouble()*1/MAX_ASPECT) + 1/MAX_ASPECT;
                 }
@@ -308,16 +312,24 @@ namespace ioSoftSmiths.TileMap
 
                 var curAspect = mapBounds.Width / (double)mapBounds.Height;
 
-                //If too wide then pick random x to start else pick random y to start
-                if (curAspect > Settings.AspectRatio)
+
+
+                //Random room placement
+                if (curAspect > Settings.AspectRatio) //Current map bounds too wide
                 {
+                    
                     var xTranslate = mapBounds.xMax - curBnds.Width;
                     curBnds.Translate(new IVector2(m_Random.Next(xTranslate < 0 ? 0 : xTranslate), 0));
+                    if (Settings.RoomSpread == Settings.RSType.Loose)
+                        curBnds.Translate(new IVector2(0, curBnds.yMax));
+                   
                 }
-                else
+                else // Current map bounds too tall
                 {
                     var yTranslate = mapBounds.yMax - curBnds.Height;
                     curBnds.Translate(new IVector2(0, m_Random.Next(yTranslate < 0 ? 0 : yTranslate)));
+                    if (Settings.RoomSpread == Settings.RSType.Loose)
+                        curBnds.Translate(new IVector2(curBnds.xMax, 0));
                 }
 
                 while (true)
@@ -926,7 +938,13 @@ namespace ioSoftSmiths.TileMap
             //public static List<float> AllowedRoomMixPct = new List<float> {0.8f, 0.2f};
 
 
-            public static int RoomSpreadFactor = 10;
+            public static RSType RoomSpread = RSType.Tight;
+            public enum RSType : byte
+            {
+                Tight,
+                Loose
+            }
+
 
             internal static double CalcRoutingStrength
             {
