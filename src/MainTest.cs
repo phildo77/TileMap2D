@@ -33,7 +33,7 @@ class MainTest
         Generate.Settings.RoomSizeMin = 6;
         Generate.Settings.RoomSizeMax = 20;
 
-        Generate.Settings.RoomSpread = Generate.Settings.RSType.Loose;
+        Generate.Settings.RoomSpread = Generate.Settings.RSType.Tight;
 
         Console.WriteLine(Generate.DebugSettingsToString());
 
