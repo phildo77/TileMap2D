@@ -67,7 +67,10 @@ namespace ioSoftSmiths.ioLog
 
         public static void Log(string _logId, string _group, string _message, MsgPriLvl _verbosityLevel)
         {
-            m_Logs[_logId].Log(_group + " : " + _message, _verbosityLevel);
+            if(m_Logs[_logId].Style == LogStyle.DEBUG)
+                m_Logs[_logId].Log(_group + " : " + _message, _verbosityLevel);
+            else
+                m_Logs[_logId].Log(_message, _verbosityLevel);
         }
 
         public static string TimeStamp()
