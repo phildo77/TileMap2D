@@ -95,7 +95,7 @@ namespace ioSoftSmiths.ioLog
             //private Queue<Message> m_Messages = new Queue<Message>();
             public LogStyle Style { get; set; }
             private byte m_VerbosityMask;
-            private Action<string> m_OutputAction;
+            private readonly Action<string> m_OutputAction;
 
             public MsgLog(LogStyle _style, LogVerbosity _verbosity, Action<string> _outputAction)
             {

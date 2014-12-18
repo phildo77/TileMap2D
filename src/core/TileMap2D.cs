@@ -96,9 +96,9 @@ namespace ioSoftSmiths.TileMap
 
 
 
-        public TileMap2D(IVector2 _size)
+        public TileMap2D(IVector2 _size, ushort _defaultData = 0)
         {
-            m_MapData = new CDataArray2D<ushort>(_size.x, _size.y, 0, true);
+            m_MapData = new CDataArray2D<ushort>(_size.x, _size.y, _defaultData, true);
         }
 
         public ushort this[IVector2 _coord] { get { return this[_coord.x, _coord.y]; } set { this[_coord.x, _coord.y] = value; } }

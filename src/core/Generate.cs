@@ -25,6 +25,7 @@ namespace ioSoftSmiths.TileMap
         private static ushort FloorMaterial = 2;
         private static TileMap2D m_Tilemap;
         public static bool GenerateDone;
+        public static double Progress;
         public static bool m_Generating;
 
         public static bool Generating
@@ -111,7 +112,7 @@ namespace ioSoftSmiths.TileMap
                 //invalid target aspect
                 if (FlipCoin()) 
                 {
-                    tarAspect = m_Random.NextDouble()*7 + 1;
+                    tarAspect = m_Random.NextDouble() * (MAX_ASPECT - 1) + 1;
                 }
                 else 
                 {
@@ -345,8 +346,9 @@ namespace ioSoftSmiths.TileMap
                 var shape = Settings.AllowedRoomShapes[m_Random.Next(Settings.AllowedRoomShapes.Count)];
                 rooms.Add(new Room(roomBndys[bndyIdx].ShrinkBy(curPlacementBuffer), shape));
 
+                Progress = (bndyIdx/(double)(roomCount - 1))/2d;
                 Msg.Log(LOGKEY_MESSAGES, LOGKEY_MESSAGES,
-                    "Placing Rooms: " + (int)((float)bndyIdx / (roomCount - 1) * 100), MsgPriLvl.HIGH);
+                    "Placing Rooms: " + (int)((double)bndyIdx / (roomCount - 1) * 100), MsgPriLvl.HIGH);
             }
 
             //Add outer buffer
@@ -355,7 +357,7 @@ namespace ioSoftSmiths.TileMap
                 throw new Exception("Map bounds origin not at 0,0 (" + mapBounds.xMin + ", " + mapBounds.yMin + ")");
             Msg.Log(LOGKEY_MESSAGES, LOGKEY_MESSAGES, roomCount + " rooms generated.", MsgPriLvl.HIGH);
 
-            return new TileMap2D(new IVector2(mapBounds.Width, mapBounds.Height)) { m_Rooms = rooms };
+            return new TileMap2D(new IVector2(mapBounds.Width, mapBounds.Height), EmptyMaterial) { m_Rooms = rooms };
         }
 
         //private static IEnumerator CreateTunnels(IVector2 _entryPt) //UNITY
@@ -450,6 +452,7 @@ namespace ioSoftSmiths.TileMap
                 {
                     var fromVector = roomMST.GetNode(nodeIdx);
                     var toVector = roomMST.GetNode(edge.ToNode);
+                    Progress = 0.5d + (edgesDone/(double) roomMST.EdgeCount)/2d;
                     logMsg = "Creating Tunnels " + (int) ((edgesDone/(float) roomMST.EdgeCount)*100);
                     //Log(logMsg);
                     Msg.Log(LOGKEY_MESSAGES, LOGKEY_MESSAGES, logMsg, MsgPriLvl.HIGH);
