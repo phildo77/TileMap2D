@@ -85,7 +85,7 @@ namespace ioSoftSmiths.TileMap
         // END UNITY -----------------------------------------------------------------------------
 
         private const string TAG_DEBUG = "ioSoftSmiths.TileMap.TileMap2D";
-        internal CDataArray2D<ushort> m_MapData;
+        internal CDataArray2D<ulong> m_MapData;
         internal List<TunnelNetwork> m_Tunnels;
         internal RoomGroup m_Rooms;
         internal IVector2 m_EntryPoint;
@@ -94,15 +94,13 @@ namespace ioSoftSmiths.TileMap
 
         public IVector2 Dims { get { return m_MapData.Dims; } }
 
-
-
-        public TileMap2D(IVector2 _size, ushort _defaultData = 0)
+        public TileMap2D(IVector2 _size, ulong _defaultData = 0)
         {
-            m_MapData = new CDataArray2D<ushort>(_size.x, _size.y, _defaultData, true);
+            m_MapData = new CDataArray2D<ulong>(_size.x, _size.y, _defaultData, true);
         }
 
-        public ushort this[IVector2 _coord] { get { return this[_coord.x, _coord.y]; } set { this[_coord.x, _coord.y] = value; } }
-        public ushort this[int x, int y]
+        public ulong this[IVector2 _coord] { get { return this[_coord.x, _coord.y]; } set { this[_coord.x, _coord.y] = value; } }
+        public ulong this[int x, int y]
         {
             get
             {
@@ -189,6 +187,19 @@ namespace ioSoftSmiths.TileMap
         {
             return m_MapData.ToString();
         }
+
+        public List<IVector2> GetAllCoordsMatching(ulong _data)
+        {
+            var coords = new List<IVector2>();
+            
+            for(int x = 0; x < Dims.x; ++x)
+                for(int y = 0; y < Dims.y; ++y)
+                    if(this[x,y].Equals(_data)) coords.Add(new IVector2(x,y));
+
+            return coords;
+
+        }
+
     }
 
     

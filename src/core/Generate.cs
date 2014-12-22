@@ -20,9 +20,9 @@ namespace ioSoftSmiths.TileMap
         public const string LOGKEY_MESSAGES = "TileMap.Generate.Messages";
         private const double MAX_ASPECT = 8.0;
         private static Random m_Random;
-        private static ushort EmptyMaterial;
-        private static ushort WallMaterial = 1;
-        private static ushort FloorMaterial = 2;
+        private static ulong EmptyMaterial;
+        private static ulong WallMaterial = 1;
+        private static ulong FloorMaterial = 2;
         private static TileMap2D m_Tilemap;
         public static bool GenerateDone;
         public static double Progress;
@@ -65,7 +65,7 @@ namespace ioSoftSmiths.TileMap
             return sb.ToString();
         }
 
-        public static void SetDefaultMaterials(ushort _wall, ushort _floor, ushort _empty = 0)
+        public static void SetDefaultMaterials(ulong _wall, ulong _floor, ulong _empty = 0)
         {
             WallMaterial = _wall;
             FloorMaterial = _floor;
@@ -271,7 +271,7 @@ namespace ioSoftSmiths.TileMap
                 }
         }
 
-        private static void DrawRooms(IEnumerable<Room> _rooms, ref CDataArray2D<ushort> _map)
+        private static void DrawRooms(IEnumerable<Room> _rooms, ref CDataArray2D<ulong> _map)
         {
             foreach (var room in _rooms)
             {

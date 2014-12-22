@@ -490,12 +490,5 @@ namespace CDataArray
             Back
         }
 
-        //Public methods --------------------------------------------------------------------
-        public struct SlicedData
-        {
-            public IVector2 BeginCoord;
-            public ushort Data;
-            public IVector2 EndCoord;
-        }
     }
 }
