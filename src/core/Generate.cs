@@ -192,6 +192,9 @@ namespace ioSoftSmiths.TileMap
                 foreach (var path in tunnel.Paths)
                     m_Tilemap.m_MapData.DrawPath(path.Points, FloorMaterial);
 
+            //Draw Entry Point Floor (in case it landed on a Wall)
+            m_Tilemap.m_MapData[m_Tilemap.EntryPoint] = FloorMaterial;
+
             //Add Doorways
             AddDoorways();
 
