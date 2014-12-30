@@ -1,3 +1,6 @@
+An example (early build ~11/2014) visualization of how the random generator works here:
+http://www.pjlorenz.com/TileMapVisualizer.html
+
 TileMap2D
 =====
 
