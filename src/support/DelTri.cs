@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ioSoftSmiths.ioPathing
+namespace ioSoftSmiths.ioAStar
 {
     public class DelaunayTriangulation
     {

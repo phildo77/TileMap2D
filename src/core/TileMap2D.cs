@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CDataArray;
+using ioSoftSmiths.Collections;
 using ioSoftSmiths.ioLog;
 using ioSoftSmiths.ioVector;
 using ioSoftSmiths.ioSupport;
@@ -90,7 +91,7 @@ namespace ioSoftSmiths.TileMap
         internal RoomGroup m_Rooms;
         internal IVector2 m_EntryPoint;
         public IVector2 EntryPoint { get { return m_EntryPoint; } }
-
+        public Graph2d m_PathingGraph; 
 
         public IVector2 Dims { get { return m_MapData.Dims; } }
 

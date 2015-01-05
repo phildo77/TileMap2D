@@ -58,7 +58,7 @@
     <Compile Include="src\support\ioGraph.cs" />
     <Compile Include="src\support\ioLog.cs" />
     <Compile Include="src\support\ioMinPriQ.cs" />
-    <Compile Include="src\support\ioPathing.cs" />
+    <Compile Include="src\support\ioAStar.cs" />
     <Compile Include="src\support\ioSupport.cs" />
     <Compile Include="src\support\IVector2.cs" />
   </ItemGroup>

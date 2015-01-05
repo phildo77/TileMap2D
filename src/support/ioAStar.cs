@@ -5,7 +5,7 @@ using ioSoftSmiths.ioLog;
 using ioSoftSmiths.ioVector;
 //using UnityEngine;
 
-namespace ioSoftSmiths.ioPathing
+namespace ioSoftSmiths.ioAStar
 {
     public static class AStarGen
     {
@@ -254,10 +254,6 @@ namespace ioSoftSmiths.ioPathing
         //public static IEnumerator AStar(Graph2d _graph, IVector2 _start, IVector2 _end, double _turnCostAdder, double _defVaul, Func<IVector2, IVector2, double, double> _heuristic)
         public static void AStar(Graph2d _graph, IVector2 _start, IVector2 _end, double _turnCostAdder, double _defVaul, Func<IVector2, IVector2, double, double> _heuristic)
         {
-
-            
-            
-
             var openList = new ioMinPriQ<AStarOpenNode>();
             openList.Enqueue(new AStarOpenNode(_start, null, 0, _heuristic(_start, _end, _defVaul)));
             var closedList = new Dictionary<IVector2, AStarClosedNode>();
@@ -367,6 +363,7 @@ namespace ioSoftSmiths.ioPathing
             {
                 String dbgMsg = "End Node Null -- No path found?";
                 Msg.LogDebug(TAG_DEBUG, dbgMsg, MsgPriLvl.HIGH);
+                AStarPath = null;
                 //return null; new List<IVector2>();
             }
             else
@@ -397,6 +394,7 @@ namespace ioSoftSmiths.ioPathing
             //yield return null; //UNITY
 
         }
+
 
     }
 

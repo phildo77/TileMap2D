@@ -378,6 +378,34 @@ namespace ioSoftSmiths.ioSupport
             }
             return turns;
         }
+
+        public static List<FPoint> ExtendPoints(FPoint _from, FPoint _to, int numberOfPoints)
+        {
+            var extendedPoints = new List<FPoint> {_from};
+
+            for (double d = 1; d < numberOfPoints - 1; d++)
+            {
+                float a = (float) ((Math.Max(_from.X, _to.X) - Math.Min(_from.X, _to.X)) * d / (double)(numberOfPoints - 1) + Math.Min(_from.X, _to.X));
+                float b = (float) ((Math.Max(_from.Y, _to.Y) - Math.Min(_from.Y, _to.Y)) * d / (double)(numberOfPoints - 1) + Math.Min(_from.Y, _to.Y));
+                var pt2 = new FPoint(a, b);
+                extendedPoints.Add(pt2);
+            }
+
+            extendedPoints.Add(_to);
+            return extendedPoints;
+        }
+
+        public struct FPoint
+        {
+            public float X;
+            public float Y;
+
+            public FPoint(float _x, float _y)
+            {
+                X = _x;
+                Y = _y;
+            }
+        }
     }
 
     public struct Bounds

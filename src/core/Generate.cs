@@ -7,7 +7,7 @@ using CDataArray;
 using ClipperLib;
 using ioSoftSmiths.Collections;
 using ioSoftSmiths.ioLog;
-using ioSoftSmiths.ioPathing;
+using ioSoftSmiths.ioAStar;
 using ioSoftSmiths.ioSupport;
 using ioSoftSmiths.ioVector;
 //using UnityEngine;
@@ -196,7 +196,7 @@ namespace ioSoftSmiths.TileMap
             m_Tilemap.m_MapData[m_Tilemap.EntryPoint] = FloorMaterial;
 
             //Add Doorways
-            AddDoorways();
+            CreateDoorways();
 
             var timeStampEnd = DateTime.Now.Ticks/TimeSpan.TicksPerMillisecond;
             logMsg = "Dungeon Created in " + (timeStampEnd - timeStamp) + "ms";
@@ -209,7 +209,27 @@ namespace ioSoftSmiths.TileMap
             Msg.DeleteLog(LOGKEY_MESSAGES);
         }
 
-        internal static void AddDoorways()
+        internal static void CreatePathingGraph()
+        {
+            var nodes = new List<IVector2>();
+            var edges = new List<List<ioGraph<IVector2>.ioGraphEdge>>();
+
+            foreach(var tNet in m_Tilemap.m_Tunnels)
+                foreach (var path in tNet.Paths)
+                    for (int idx = 0; idx < path.Points.Count; ++idx)
+                    {
+                        IVector2 prevNode;
+                        if (idx == 0)
+                        {
+                            prevNode = path.Points[idx];
+                            if (!nodes.Contains(prevNode)) nodes.Add(prevNode);
+
+                        }
+
+                    }
+        }
+
+        internal static void CreateDoorways()
         {
             //Add Doorways
             //Get all paths that connect to rooms
