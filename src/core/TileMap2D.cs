@@ -189,17 +189,6 @@ namespace ioSoftSmiths.TileMap
             return m_MapData.ToString();
         }
 
-        public List<IVector2> GetAllCoordsMatching(ulong _data)
-        {
-            var coords = new List<IVector2>();
-            
-            for(int x = 0; x < Dims.x; ++x)
-                for(int y = 0; y < Dims.y; ++y)
-                    if(this[x,y].Equals(_data)) coords.Add(new IVector2(x,y));
-
-            return coords;
-
-        }
 
 
     }
