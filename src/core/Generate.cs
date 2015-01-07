@@ -192,8 +192,21 @@ namespace ioSoftSmiths.TileMap
                 foreach (var path in tunnel.Paths)
                     m_Tilemap.m_MapData.DrawPath(path.Points, FloorMaterial);
 
-            //Draw Entry Point Floor (in case it landed on a Wall)
+            //Draw Entry Point Floor (in case it landed on a Wall/Corner)
             m_Tilemap.m_MapData[m_Tilemap.EntryPoint] = FloorMaterial;
+            var wallCount = 0;
+            foreach (var neighbor in m_Tilemap.EntryPoint.Neighbors(false))
+                if (m_Tilemap.m_MapData[neighbor] == WallMaterial)
+                    wallCount++;
+            if (wallCount == 4)
+                foreach(var neighbor in m_Tilemap.EntryPoint.Neighbors(false))
+                    foreach(var wallNeighbor in neighbor.Neighbors(false))
+                        if (wallNeighbor != m_Tilemap.EntryPoint && m_Tilemap.m_MapData[wallNeighbor] == FloorMaterial)
+                        {
+                            m_Tilemap.m_MapData[neighbor] = FloorMaterial;
+                            goto GoodEntry;
+                        }
+            GoodEntry:
 
             //Add Doorways
             CreateDoorways();

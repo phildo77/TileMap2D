@@ -91,7 +91,9 @@ namespace ioSoftSmiths.TileMap
         internal RoomGroup m_Rooms;
         internal IVector2 m_EntryPoint;
         public IVector2 EntryPoint { get { return m_EntryPoint; } }
-        public Graph2d m_PathingGraph; 
+        public Graph2d m_PathingGraph;
+        public RoomGroup Rooms { get { return m_Rooms; } }
+        public List<TunnelNetwork> Tunnels { get { return Tunnels; } } 
 
         public IVector2 Dims { get { return m_MapData.Dims; } }
 
