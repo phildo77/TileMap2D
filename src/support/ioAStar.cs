@@ -294,7 +294,7 @@ namespace ioSoftSmiths.ioAStar
                 //foreach (var neighbor in curNode.Coord.Neighbors())
                 {
                     IVector2 neighbor = curNode.Coord + DirMap.Get(i);
-                    if (!_graph.InBounds(neighbor) || (_graph.GetNodeWeight(neighbor) == double.MaxValue)) continue;
+                    if (!_graph.InBounds(neighbor) || (_graph.IsImpassable(neighbor))) continue;
                     //Set end node and add cost
                     //var endNode = neighbor;
                     //var endNodeCost = curNode.CostSoFar + _graph.GetEdgeWeight(curNode.Coord, (G2Dir) i);//_graph[neighbor].GetEdge((G2Dir)i);
@@ -302,7 +302,7 @@ namespace ioSoftSmiths.ioAStar
                     if (i != prevDir && prevDir != -1) endNodeCost += _turnCostAdder;
 
                     //Skip if not walkable
-                    if (endNodeCost == double.MaxValue) continue;
+                    if (endNodeCost == Graph2d.IMPASSABLE) continue;
 
                     //Skip if better path already exists
                     var skipNode = false;

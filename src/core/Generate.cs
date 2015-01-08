@@ -896,7 +896,7 @@ namespace ioSoftSmiths.TileMap
 
                                     foreach (var coord in tunnelPath)
                                     {
-                                        if (routingGraph.GetNodeWeight(coord) != double.MaxValue)
+                                        if (!routingGraph.IsImpassable(coord))
                                         {
                                             var curCost = routingGraph.GetNodeWeight(coord);
                                             if (curCost <= defCost && curCost > tunnelCost[tOffset])
@@ -908,7 +908,7 @@ namespace ioSoftSmiths.TileMap
                             else
                             {
                                 foreach (var coord in path.Points)
-                                    if (routingGraph.GetNodeWeight(coord) != double.MaxValue)
+                                    if (!routingGraph.IsImpassable(coord))
                                         routingGraph.SetNodeWeight(coord, tunnelCost[0]);
                                 //routingGraph.ScaleNodeWeight(coord, 0.1f * (float)_defaultCost);
                             }

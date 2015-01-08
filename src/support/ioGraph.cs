@@ -360,7 +360,7 @@ namespace ioSoftSmiths.Collections
         private const string TAG_DEBUG = "ioSoftSmiths.Collections.Graph2d";
         private CDataArray2D<Graph2dNode> m_Nodes;
 
-
+        public const double IMPASSABLE = double.MaxValue;
         public CDataArray2D<double> Weights
         {
             get
@@ -408,7 +408,7 @@ namespace ioSoftSmiths.Collections
         {
             if (Bidirectional)
                 throw new InvalidOperationException("Graph is bidirectional.  Cannot get node weight. (Edge weights only)");
-            return !InBounds(_coord) ? double.MaxValue : m_Nodes[_coord].Weight;
+            return !InBounds(_coord) ? IMPASSABLE : m_Nodes[_coord].Weight;
         }
 
 
@@ -572,6 +572,11 @@ namespace ioSoftSmiths.Collections
             }
         }
 
+        public bool IsImpassable(IVector2 _node)
+        {
+            return GetNodeWeight(_node) >= IMPASSABLE;
+        }
+
         /*public void DebugToCSV(string _path)
         {
             m_Nodes.DebugToCSV(_path);
@@ -661,7 +666,8 @@ namespace ioSoftSmiths.Collections
             {
                 if (!bidirectional)
                     throw new NotImplementedException();
-                if ((int)_direction < 0 || (int)_direction > 7) return double.NegativeInfinity;
+                if ((int)_direction < 0 || (int)_direction > 7) 
+                    throw new ArgumentException();
                 return m_EdgeWeight[(int)_direction];
             }
 
