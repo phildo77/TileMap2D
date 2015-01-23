@@ -84,7 +84,7 @@ namespace ioSoftSmiths.TileMap
 
 
             //Set random seed
-            if (Settings.RndSeed == null)
+            if (Settings.RndSeed == 0)
             {
                 byte[] rngCont = {0, 0, 0, 0};
                 var rng = RandomNumberGenerator.Create();
