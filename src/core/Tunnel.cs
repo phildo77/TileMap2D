@@ -70,10 +70,11 @@ namespace ioSoftSmiths.TileMap
 
         public bool Intersects(IPath _path)
         {
-            foreach (ISegment segment in Segments)
-                foreach (ISegment newSegment in _path.Segments)
-                    if (segment.Intersects(newSegment)) return true;
+            foreach(IPath path in m_Paths)
+                if (path.Intersects(_path))
+                    return true;
             return false;
+
 
         }
 
@@ -228,10 +229,11 @@ namespace ioSoftSmiths.TileMap
 
             public bool Intersects(IPath _path)
             {
-                foreach (ISegment segment in Segments)
-                    foreach (ISegment thatSegment in _path.Segments)
-                        if (segment.Intersects(thatSegment)) return true;
+                foreach(var coord in Points)
+                    if (_path.Points.Contains(coord))
+                        return true;
                 return false;
+
             }
 
             public List<IVector2> GetIntersections(IPath _path)
