@@ -87,7 +87,7 @@ namespace ioSoftSmiths.TileMap
         public void Add(IPath _path)
         {
             //Get all coords in tunnel network
-            var tCoords = GetAllCoords(true); //TODO include doorways?
+            var tCoords = GetAllPathCoords(true); //TODO include doorways?
 
             int start = 0;
             int end = _path.Points.Count - 1;
@@ -335,7 +335,7 @@ namespace ioSoftSmiths.TileMap
 
         }
 
-        public HashSet<IVector2> GetAllCoords(bool _includeDoorways)
+        public HashSet<IVector2> GetAllPathCoords(bool _includeDoorways)
         {
             var coords = new HashSet<IVector2>();
             if (_includeDoorways)

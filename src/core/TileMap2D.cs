@@ -93,7 +93,7 @@ namespace ioSoftSmiths.TileMap
         public IVector2 EntryPoint { get { return m_EntryPoint; } }
         public Graph2d m_PathingGraph;
         public RoomGroup Rooms { get { return m_Rooms; } }
-        public List<TunnelNetwork> Tunnels { get { return Tunnels; } } 
+        public List<TunnelNetwork> Tunnels { get { return m_Tunnels; } } 
 
         public IVector2 Dims { get { return m_MapData.Dims; } }
 

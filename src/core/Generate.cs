@@ -94,7 +94,7 @@ namespace ioSoftSmiths.TileMap
 
                 Settings.RndSeed = BitConverter.ToInt32(rngCont, 0);
             }
-            m_Random = new Random(Settings.RndSeed.Value);
+            m_Random = new Random(Settings.RndSeed);
 
             var timeStamp = DateTime.Now.Ticks/TimeSpan.TicksPerMillisecond;
             Msg.LogDebug(TAG_DEBUG, DebugSettingsToString(), MsgPriLvl.HIGH);
@@ -156,7 +156,7 @@ namespace ioSoftSmiths.TileMap
 
             if (m_Tilemap.m_Tunnels == null)
             {
-                var newSeed = (int) Math.Pow(Settings.RndSeed.Value, 2);
+                var newSeed = (int) Math.Pow(Settings.RndSeed, 2);
                 Msg.LogDebug(TAG_DEBUG,
                     "Bad Triangulation restarting Dungeon Thread with Seed " + Settings.RndSeed + " trying Seed " +
                     newSeed,
@@ -528,9 +528,9 @@ namespace ioSoftSmiths.TileMap
 
                         //Get all coords of from and to nets (exluding room doorways)
                         foreach (var net in fromNets)
-                            fromCoordsf.UnionWith(net.GetAllCoords(true));
+                            fromCoordsf.UnionWith(net.GetAllPathCoords(true));
                         foreach (var net in toNets)
-                            toCoordsf.UnionWith(net.GetAllCoords(true));
+                            toCoordsf.UnionWith(net.GetAllPathCoords(true));
 
                         //Remove room wall coordinates
                         foreach (var room in m_Tilemap.m_Rooms)
@@ -685,7 +685,7 @@ namespace ioSoftSmiths.TileMap
             {
                 var availCoords = new HashSet<IVector2>();
                 foreach (var tNet in m_Tilemap.m_Tunnels)
-                    availCoords.UnionWith(tNet.GetAllCoords(false));
+                    availCoords.UnionWith(tNet.GetAllPathCoords(false));
 
                 foreach (var room in m_Tilemap.m_Rooms)
                     availCoords.RemoveWhere(_coord => room.GetWallCoords(true).Contains(_coord));
@@ -921,11 +921,11 @@ namespace ioSoftSmiths.TileMap
 
         public static class Settings
         {
-            public enum MagStrength : long
+            public enum MagStrength : int
             {
                 None = 0,
-                Minimum = 1000000000000,
-                Medium = 1000000,
+                Minimum = 12,
+                Medium = 6,
                 Maximum = 1
             }
 
@@ -938,7 +938,7 @@ namespace ioSoftSmiths.TileMap
             }
 
             //Dungeon Seed (null = random by system time)
-            public static int? RndSeed;
+            public static int RndSeed;
 
             //Action for messages generated for the user
             public static Action<string> ActionForUserMessages = (Console.WriteLine);
@@ -1002,9 +1002,17 @@ namespace ioSoftSmiths.TileMap
             {
                 get
                 {
-                    if (TunnelRoutingStrength == 0)
-                        return 0;
-                    return (1d/(long) TunnelRoutingStrength)*100;
+                    //TODO loss of data due to double return (LONG IS HUGE)
+
+                    int orderMag = (int)TunnelRoutingStrength;
+                    if (orderMag == 0) return 0;
+
+                    long result = 1;
+                    for (int times = 0; times < orderMag - 1; ++times)
+                    {
+                        result *= 10;
+                    }
+                    return (1d / (long)result) * 100;
                 }
             }
 

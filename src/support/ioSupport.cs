@@ -480,6 +480,11 @@ namespace ioSoftSmiths.ioSupport
             return new Bounds(nxMin, nyMin, nxMax, nyMax);
         }
 
+        public Bounds CopyAndInclude(IVector2 _point)
+        {
+            return CopyAndInclude(new Bounds(_point.x, _point.y, _point.x, _point.y));
+        }
+
         public bool IsOnEdge(IVector2 _point)
         {
             return ((_point.x == xMin) || (_point.x == xMax) || (_point.y == yMin) || (_point.y == yMax)) ? true : false;

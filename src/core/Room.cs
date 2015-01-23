@@ -123,6 +123,14 @@ namespace ioSoftSmiths.TileMap
 
             return floor;
         }
+
+        public HashSet<IVector2> GetAllCoords()
+        {
+            var allCoords = new HashSet<IVector2>();
+            allCoords.UnionWith(GetFloorCoords(true));
+            allCoords.UnionWith(GetWallCoords(true));
+            return allCoords;
+        }
     }
 
     public class RoomGroup : IEnumerable<Room>
